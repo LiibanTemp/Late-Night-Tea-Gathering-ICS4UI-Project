@@ -13,37 +13,44 @@ public class PanBoard extends JPanel implements ActionListener {
     Rectangle rB, rP; // rectangles for the 3 sprites.
     private Player p;
     Sprite s;
-    //Jump j;
     private Timer timer;
     private Image background;
     static String sName;
     Label JLabel;
-    int nChange = 1, nX, nY;
+    int nChange = 1, nX, nY, nDir = 3;
     String sFile;
     BufferedImage biSpriteSheet, biSprite;
 
     public PanBoard() {
-        sFile = "Walk.png";
+        //sFile = "Walk8.png";
         nX = 0;
-        nY = 3;
+        //nY = 3;
         p = new Player();
         s = new Sprite();
-        //j = new Jump();
         s.loadSprite(sFile);
         addKeyListener(new Movement());
         setFocusable(true);
         ImageIcon i1 = new ImageIcon("Castle2.jpg");
         background = i1.getImage();
-        timer = new Timer(30, this);
+        timer = new Timer(60, this);
         timer.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
         p.move();
-        biSprite = s.getSprite(nX, nY);
+        if (nX > 8) {
+            nX = 0;
+            // nDir++;
+        }
+        if (nDir > 3) {
+            nDir = 0;
+        }
+        biSprite = s.getSprite(nX, nDir);
+        System.out.println(nX + " " + nDir);
         repaint();
-        
+        //nX++;
+
     }
 
     @Override
@@ -51,7 +58,7 @@ public class PanBoard extends JPanel implements ActionListener {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(background, 0, 0, null);
-        //g2d.drawImage(s.getSprite(nX, nY), p.getX(), p.getY(), null);
+        //g2d.drawImage(biSprite, 0, 376, null);
         g2d.drawImage(biSprite, p.getX(), p.getY(), null);
     }
 
@@ -60,28 +67,26 @@ public class PanBoard extends JPanel implements ActionListener {
         @Override
         public void keyReleased(KeyEvent w) {
             p.keyReleased(w);
+            nX = 0;
         }
 
         @Override
         public void keyPressed(KeyEvent w) {
             p.keyPressed(w);
             int code = w.getKeyCode();
-        if (code == KeyEvent.VK_A) {
-            nY = 1;
-            nX++;
-        }else if (code == KeyEvent.VK_D) {
-            nY = 3;
-            nX++;
-        } else if (code == KeyEvent.VK_W) {
-            //nY = 0;
-            nX++;
-        } else if (code == KeyEvent.VK_S) {
-            //nY = 2;
-            nX++;
-        }
-        if (nX == 8) {
-            nX = 0;
-        }
+            if (code == KeyEvent.VK_A) {
+                nDir = 1;
+                nX++;
+            } else if (code == KeyEvent.VK_D) {
+                nDir = 3;
+                nX++;
+            } else if (code == KeyEvent.VK_W) {
+                nDir = 0;
+                nX++;
+            } else if (code == KeyEvent.VK_S) {
+                nDir = 2;
+                nX++;
+            }
         }
     }
 }
