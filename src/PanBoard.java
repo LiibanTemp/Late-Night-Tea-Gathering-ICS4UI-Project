@@ -65,7 +65,7 @@ public class PanBoard extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent w) {
             p.keyPressed(w);
-            int code = w.getKeyCode();
+          /*  int code = w.getKeyCode();
         if (code == KeyEvent.VK_A) {
             nY = 1;
             nX++;
@@ -81,7 +81,7 @@ public class PanBoard extends JPanel implements ActionListener {
         }
         if (nX == 8) {
             nX = 0;
-        }
+        }*/
         }
     }
 }
